@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Typography, IconButton } from 'material-ui';
+import Card from 'material-ui/Card';
+import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
 import { withStyles } from 'material-ui/styles';
+
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import FavoriteBorderIcon from 'material-ui-icons/FavoriteBorder';
 import ThumbsDownIcon from 'material-ui-icons/ThumbDown';

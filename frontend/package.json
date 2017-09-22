@@ -10,20 +10,17 @@
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.6",
-    "promise": "8.0.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-apollo": "^1.4.15",
     "react-dev-utils": "^4.0.1",
     "react-dom": "^15.6.1",
-    "react-map-gl": "^3.0.4",
     "react-redux": "^5.0.6",
     "recompose": "^0.25.0",
     "redux": "^3.7.2",
     "rxjs": "^5.4.3",
     "sw-precache-webpack-plugin": "0.11.4",
-    "typeface-roboto": "^0.0.35",
-    "whatwg-fetch": "2.0.3"
+    "typeface-roboto": "^0.0.35"
   },
   "scripts": {
     "start": "node scripts/start.js",

@@ -23,7 +23,7 @@ services:
       POSTGRES_PASSWORD: example
       POSTGRES_USER: postgres
     ports:
-      - "5400:5432"
+      - "5500:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
   graphql:
@@ -31,7 +31,7 @@ services:
       context: ./graphql
       dockerfile: Dockerfile
     ports:
-      - "9001:9229"
+      - "9002:9229"
     volumes:
       - "./graphql:/app"
     restart: always
