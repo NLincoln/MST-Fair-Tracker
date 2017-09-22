@@ -16,5 +16,11 @@ scalar JSON
 type Query {
   companies: [Company]
 }
+
+type Mutation {
+  likeCompany(id: ID!): Boolean
+  dislikeCompany(id: ID!): Boolean
+  favoriteCompany(id: ID!): Boolean
+}
 `;
 module.exports = schema;

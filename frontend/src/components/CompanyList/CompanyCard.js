@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
+
 import Card from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import { withStyles } from 'material-ui/styles';
-
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import FavoriteBorderIcon from 'material-ui-icons/FavoriteBorder';
 import ThumbsDownIcon from 'material-ui-icons/ThumbDown';
 import ThumbsUpIcon from 'material-ui-icons/ThumbUp';
 import CommentIcon from 'material-ui-icons/Comment';
 import LocationIcon from 'material-ui-icons/LocationOn';
+import { gql, graphql } from 'react-apollo';
 
 const Link = (props) => (
   <a href={props.href} target="_blank">{props.children}</a>
@@ -50,6 +52,12 @@ const style = theme => ({
   }
 });
 
+const likeCompany = gql`
+mutation likeCompany($id: ID!) {
+  likeCompany(id: $id)
+}
+`;
+
 class CompanyCard extends Component {
   render() {
     const { props } = this;
@@ -87,5 +95,14 @@ class CompanyCard extends Component {
     );
   }
 }
-
-export default withStyles(style)(CompanyCard);
+export default compose(
+  withStyles(style),
+  graphql(likeCompany, {
+    options: (props) => ({
+      variables: {
+        id: props.id
+      }
+    }),
+    name: 'likeCompany'
+  })
+)(CompanyCard)
