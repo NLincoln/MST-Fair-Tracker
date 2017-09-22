@@ -81,7 +81,7 @@ class CompanyCard extends Component {
         <IconButton>
           <ThumbsDownIcon/>
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => props.likeCompany()}>
           <ThumbsUpIcon/>
         </IconButton>
         <IconButton>
