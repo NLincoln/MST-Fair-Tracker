@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import CompanyCard from './CompanyCard';
 import { withStyles } from 'material-ui/styles';
+import { graphql, gql } from 'react-apollo';
+import compose from 'recompose/compose';
 
 const style = theme => ({
   list: {
@@ -17,16 +19,28 @@ const style = theme => ({
     gridGap: theme.padding
   }
 });
+const companiesQuery = gql`
+query getCompanies {
+  companies {
+    id
+    company_name
+    city
+    description
+  }
+}
+`;
 
 class CompanyList extends Component {
   render() {
+    if (this.props.data.loading) {
+      return <div>Loading</div>
+    }
     return <div className={this.props.classes.list}>
-      <CompanyCard/>
-      <CompanyCard/>
-      <CompanyCard/>
-      <CompanyCard/>
+      {this.props.data.companies.map((company) => <CompanyCard key={company.id} {...company}/>)}
     </div>
   }
 }
-
-export default withStyles(style)(CompanyList);
+export default compose(
+  withStyles(style),
+  graphql(companiesQuery)
+)(CompanyList);
