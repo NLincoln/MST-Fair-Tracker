@@ -1,0 +1,6 @@
+FROM node:8
+COPY . /app
+WORKDIR /app
+RUN yarn install
+ENV NODE_ENV=prod
+ENTRYPOINT node /app/src/index.js

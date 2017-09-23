@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  ingress:
+    ports:
+      - "80:80"
+    build:
+      context: ./ingress
+      dockerfile: Dockerfile
+    links:
+      - frontend
+      - graphql
+    restart: always
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  graphql:
+    build:
+      context: ./graphql
+      dockerfile: Dockerfile.prod
+    ports:
+      - "9002:9229"
+    restart: always
+    links:
+      - db
+volumes:
+  pgdata:
