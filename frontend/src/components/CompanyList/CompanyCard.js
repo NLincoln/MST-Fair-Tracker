@@ -71,9 +71,9 @@ class CompanyCard extends Component {
           </Typography>
         </div>
         <div>
+        <FavoriteCompanyButton {...company}/>
         <LikeCompanyButton {...company}/>
         <DislikeCompanyButton {...company}/>
-        <FavoriteCompanyButton {...company}/>
         <IconButton className={classes.commentIcon}>
           <CommentIcon/>
         </IconButton>
