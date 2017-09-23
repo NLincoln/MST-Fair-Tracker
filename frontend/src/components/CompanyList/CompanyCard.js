@@ -53,6 +53,28 @@ class CompanyCard extends Component {
     isDialogOpen: false,
   };
 
+  popStateListener = () => {
+    this.setState({
+      isDialogOpen: false
+    });
+  };
+
+  openDialog = () => {
+    window.history.pushState({}, `Comments for ${this.props.company.company_name}`, `#`);
+    this.setState({
+      isDialogOpen: true
+    });
+    window.addEventListener('popstate', this.popStateListener);
+  };
+
+  closeDialog = () => {
+    window.history.back();
+    this.setState({
+      isDialogOpen: false
+    })
+    window.removeEventListener('popstate', this.popStateListener);
+  };
+
   render() {
     const { props } = this;
     const { classes, company } = props;
@@ -75,17 +97,13 @@ class CompanyCard extends Component {
         <FavoriteCompanyButton {...company}/>
         <LikeCompanyButton {...company}/>
         <DislikeCompanyButton {...company}/>
-        <IconButton className={classes.commentIcon} onClick={() => this.setState({
-          isDialogOpen: true
-        })}>
+        <IconButton className={classes.commentIcon} onClick={this.openDialog}>
           <CommentIcon/>
         </IconButton>
         </div>
         <CommentDialog
           isOpen={this.state.isDialogOpen}
-          onClose={() => this.setState({
-            isDialogOpen: false
-          })}
+          onClose={this.closeDialog }
           company={company}
         />
       </Card>
