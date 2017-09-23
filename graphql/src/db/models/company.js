@@ -20,6 +20,12 @@ const Company = client.define('companies', {
     allowNull: false,
     defaultValue: false,
   },
+}, {
+  defaultScope: {
+    order: [
+      ['id', 'ASC']
+    ]
+  }
 });
 
 module.exports = Company;
