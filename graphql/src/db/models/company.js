@@ -1,4 +1,5 @@
 const { client, Sequelize } = require('../connection');
+const Comment = require('./company/comments');
 
 const Company = client.define('companies', {
   company_name: Sequelize.STRING,
@@ -27,5 +28,12 @@ const Company = client.define('companies', {
     ]
   }
 });
+
+Company.hasMany(Comment, {
+  foreignKey: 'company',
+  sourceKey: 'id'
+});
+
+Comment.sync({ force: true });
 
 module.exports = Company;

@@ -15,6 +15,7 @@ scalar Email
 scalar JSON
 type Query {
   companies: [Company]
+  company(id: ID!): Company
 }
 
 type Mutation {

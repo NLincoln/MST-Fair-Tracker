@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-
 import Card from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
@@ -12,7 +11,11 @@ import {
   FavoriteCompanyButton,
   LikeCompanyButton,
   DislikeCompanyButton
-} from "./CompanyCard/Buttons"
+} from "./CompanyCard/Buttons";
+
+import CommentDialog from './CompanyCard/CommentList';
+
+
 const Link = (props) => (
   <a href={props.href} target="_blank">{props.children}</a>
 );
@@ -27,12 +30,6 @@ const style = theme => ({
     padding: theme.padding,
     position: 'relative',
     boxShadow: theme.shadows[5],
-    transition: theme.transitions.create('box-shadow', {
-      duration: theme.transitions.duration.standard
-    }),
-    '&:hover': {
-      boxShadow: theme.shadows[15]
-    }
   },
   commentIcon: {
     position: 'absolute',
@@ -52,6 +49,10 @@ const style = theme => ({
 });
 
 class CompanyCard extends Component {
+  state = {
+    isDialogOpen: false,
+  };
+
   render() {
     const { props } = this;
     const { classes, company } = props;
@@ -74,10 +75,19 @@ class CompanyCard extends Component {
         <FavoriteCompanyButton {...company}/>
         <LikeCompanyButton {...company}/>
         <DislikeCompanyButton {...company}/>
-        <IconButton className={classes.commentIcon}>
+        <IconButton className={classes.commentIcon} onClick={() => this.setState({
+          isDialogOpen: true
+        })}>
           <CommentIcon/>
         </IconButton>
         </div>
+        <CommentDialog
+          isOpen={this.state.isDialogOpen}
+          onClose={() => this.setState({
+            isDialogOpen: false
+          })}
+          company={company}
+        />
       </Card>
     );
   }

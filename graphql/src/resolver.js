@@ -18,7 +18,8 @@ module.exports = {
   Query: {
     companies: () => {
       return Companies.findAll();
-    }
+    },
+    company: (obj, { id }) => Companies.findById(id)
   },
 
   Mutation: {
@@ -43,6 +44,6 @@ module.exports = {
       company.is_disliked = false;
       return company.save();
     }
-    
+
   }
 };
