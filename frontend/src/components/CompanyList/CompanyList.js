@@ -29,7 +29,10 @@ query getCompanies {
     is_liked
     is_disliked
     is_favorited
-
+    comments {
+      id
+      text
+    }
   }
 }
 `;

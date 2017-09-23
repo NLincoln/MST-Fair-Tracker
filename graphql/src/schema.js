@@ -18,10 +18,16 @@ type Query {
   company(id: ID!): Company
 }
 
+input CommentInput {
+  text: String!
+}
+
 type Mutation {
   likeCompany(id: ID!): Company
   dislikeCompany(id: ID!): Company
   favoriteCompany(id: ID!): Company
+  
+  createComment(company: ID! comment: CommentInput!): CompanyComment
 }
 `;
 module.exports = schema;

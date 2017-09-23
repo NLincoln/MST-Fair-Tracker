@@ -3,7 +3,7 @@ const Comments = require('../db/models/company/comments');
 module.exports = {
   // language=GraphQL Schema
   model: `
-  type CompanyComments {
+  type CompanyComment {
     id: ID!
     text: String!
   }
@@ -18,7 +18,7 @@ module.exports = {
     is_disliked: Boolean!
     is_favorited: Boolean!
 
-    comments: [CompanyComments]
+    comments: [CompanyComment]
   }
   `,
 

@@ -1,5 +1,6 @@
 const { GraphQLScalarType } = require('graphql');
 const Companies = require('./db/models/company');
+const Comments = require('./db/models/company/comments');
 
 const scalar = (name) => new GraphQLScalarType({
   name: name,
@@ -43,7 +44,16 @@ module.exports = {
       company.is_favorited = !company.is_favorited;
       company.is_disliked = false;
       return company.save();
-    }
+    },
 
+    async createComment(obj, vars) {
+      const comment = await Comments.create({
+        company: vars.company,
+        text: vars.comment.text
+      });
+      return comment.get({
+        plain: true
+      });
+    }
   }
 };
