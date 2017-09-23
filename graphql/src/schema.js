@@ -18,9 +18,9 @@ type Query {
 }
 
 type Mutation {
-  likeCompany(id: ID!): Boolean
-  dislikeCompany(id: ID!): Boolean
-  favoriteCompany(id: ID!): Boolean
+  likeCompany(id: ID!): Company
+  dislikeCompany(id: ID!): Company
+  favoriteCompany(id: ID!): Company
 }
 `;
 module.exports = schema;
