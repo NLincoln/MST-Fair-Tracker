@@ -26,6 +26,10 @@ query getCompanies {
     company_name
     city
     description
+    is_liked
+    is_disliked
+    is_favorited
+
   }
 }
 `;
@@ -36,7 +40,7 @@ class CompanyList extends Component {
       return <div>Loading</div>
     }
     return <div className={this.props.classes.list}>
-      {this.props.data.companies.map((company) => <CompanyCard key={company.id} {...company}/>)}
+      {this.props.data.companies.map((company) => <CompanyCard key={company.id} company={company}/>)}
     </div>
   }
 }
