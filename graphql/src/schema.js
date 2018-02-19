@@ -4,30 +4,37 @@
  * The PhoneNumber and Email types are really just strings, but putting a label on them gives them **meaning**
  */
 
-
 // language=GraphQL Schema
-const schema = `
-scalar Date
-scalar DateTime
-scalar DateTimeTimeZone
-scalar PhoneNumber
-scalar Email
-scalar JSON
-type Query {
-  companies: [Company]
-  company(id: ID!): Company
-}
+const gql = require("graphql-tag");
 
-input CommentInput {
-  text: String!
-}
+const schema = gql`
+  scalar Date
 
-type Mutation {
-  likeCompany(id: ID!): Company
-  dislikeCompany(id: ID!): Company
-  favoriteCompany(id: ID!): Company
-  
-  createComment(company: ID! comment: CommentInput!): CompanyComment
-}
+  scalar DateTime
+
+  scalar DateTimeTimeZone
+
+  scalar PhoneNumber
+
+  scalar Email
+
+  scalar JSON
+
+  type Query {
+    companies: [Company]
+    company(id: ID!): Company
+  }
+
+  input CommentInput {
+    text: String!
+  }
+
+  type Mutation {
+    likeCompany(id: ID!): Company
+    dislikeCompany(id: ID!): Company
+    favoriteCompany(id: ID!): Company
+
+    createComment(company: ID!, comment: CommentInput!): CompanyComment
+  }
 `;
 module.exports = schema;

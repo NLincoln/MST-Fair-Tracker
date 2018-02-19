@@ -1,53 +1,52 @@
-const { GraphQLScalarType } = require('graphql');
-const Companies = require('./db/models/company');
-const Comments = require('./db/models/company/comments');
+const { GraphQLScalarType } = require("graphql");
 
-const scalar = (name) => new GraphQLScalarType({
-  name: name,
-  serialize: (value) => value,
-  parseValue: (value) => value,
-  parseLiteral: ({ value }) => value
-});
+const scalar = name =>
+  new GraphQLScalarType({
+    name: name,
+    serialize: value => value,
+    parseValue: value => value,
+    parseLiteral: ({ value }) => value
+  });
 
 module.exports = {
-  Date: scalar('Date'),
-  DateTime: scalar('DateTime'),
-  DateTimeTimeZone: scalar('DateTimeTimeZone'),
-  PhoneNumber: scalar('PhoneNumber'),
-  Email: scalar('Email'),
-  JSON: scalar('JSON'),
+  Date: scalar("Date"),
+  DateTime: scalar("DateTime"),
+  DateTimeTimeZone: scalar("DateTimeTimeZone"),
+  PhoneNumber: scalar("PhoneNumber"),
+  Email: scalar("Email"),
+  JSON: scalar("JSON"),
   Query: {
-    companies: () => {
-      return Companies.findAll();
+    companies: (parent, args, { db }) => {
+      return db.Company.findAll();
     },
-    company: (obj, { id }) => Companies.findById(id)
+    company: (obj, { id }, { db }) => db.Company.findById(id)
   },
 
   Mutation: {
-    async likeCompany(obj, { id }) {
-      const company = await Companies.findById(id);
+    async likeCompany(obj, { id }, { db }) {
+      const company = await db.Company.findById(id);
       company.is_liked = !company.is_liked;
       company.is_favorited = false;
       company.is_disliked = false;
       return company.save();
     },
-    async dislikeCompany(obj, { id }) {
-      const company = await Companies.findById(id);
+    async dislikeCompany(obj, { id }, { db }) {
+      const company = await db.Company.findById(id);
       company.is_liked = false;
       company.is_favorited = false;
       company.is_disliked = !company.is_disliked;
       return company.save();
     },
-    async favoriteCompany(obj, { id }) {
-      const company = await Companies.findById(id);
+    async favoriteCompany(obj, { id }, { db }) {
+      const company = await db.Company.findById(id);
       company.is_liked = false;
       company.is_favorited = !company.is_favorited;
       company.is_disliked = false;
       return company.save();
     },
 
-    async createComment(obj, vars) {
-      const comment = await Comments.create({
+    async createComment(obj, vars, { db }) {
+      const comment = await db.Comment.create({
         company: vars.company,
         text: vars.comment.text
       });

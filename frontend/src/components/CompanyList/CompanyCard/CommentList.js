@@ -1,44 +1,49 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Dialog from 'material-ui/Dialog';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
-import CloseIcon from 'material-ui-icons/Close';
-import TextField from 'material-ui/TextField';
-import SendIcon from 'material-ui-icons/Send';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "material-ui/styles";
+import Dialog from "material-ui/Dialog";
+import List, { ListItem, ListItemText } from "material-ui/List";
+import AppBar from "material-ui/AppBar";
+import Toolbar from "material-ui/Toolbar";
+import IconButton from "material-ui/IconButton";
+import Typography from "material-ui/Typography";
+import CloseIcon from "material-ui-icons/Close";
+import TextField from "material-ui/TextField";
+import SendIcon from "material-ui-icons/Send";
 
-import Slide from 'material-ui/transitions/Slide';
-import { gql, graphql } from 'react-apollo';
-import compose from 'recompose/compose';
+import Slide from "material-ui/transitions/Slide";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+
+import compose from "recompose/compose";
 const styles = theme => ({
   appBar: {
-    position: 'relative',
+    position: "relative"
   },
   textWrapper: {
-    position: 'relative',
+    position: "relative",
     padding: theme.padding,
-    display: 'flex'
+    display: "flex"
+  },
+  closeIcon: {
+    color: "white"
   },
   textField: {
-    width: 'calc(100% - 32px)'
+    width: "calc(100% - 32px)"
   },
   sendIcon: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
-    height: '32px'
+    height: "32px"
   },
   flex: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 const createComment = gql`
-  mutation createComment($company: ID! $comment: CommentInput!) {
-    createComment(company: $company comment: $comment) {
+  mutation createComment($company: ID!, $comment: CommentInput!) {
+    createComment(company: $company, comment: $comment) {
       id
       text
     }
@@ -48,13 +53,11 @@ const createComment = gql`
 class CommentsListDialog extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    company: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
-    isOpen: PropTypes.bool.isRequired
+    company: PropTypes.object.isRequired
   };
 
   state = {
-    commentText: ''
+    commentText: ""
   };
 
   mutate = async () => {
@@ -67,20 +70,24 @@ class CommentsListDialog extends React.Component {
       }
     });
     this.setState({
-      commentText: ''
-    })
+      commentText: ""
+    });
   };
 
-  handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+  handleKeyPress = e => {
+    if (e.key === "Enter") {
       return this.mutate();
     }
   };
 
-  onTextChange = (e) => {
+  onTextChange = e => {
     this.setState({
       commentText: e.target.value
     });
+  };
+
+  onClose = () => {
+    this.props.history.goBack();
   };
 
   render() {
@@ -90,13 +97,18 @@ class CommentsListDialog extends React.Component {
     return (
       <Dialog
         fullScreen
-        open={this.props.isOpen}
-        onRequestClose={this.props.onClose}
-        transition={<Slide direction="up" />}
+        open={true}
+        onClose={this.props.onClose}
+        transition={props => <Slide direction="up" {...props} />}
       >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton color="contrast" onClick={this.props.onClose} aria-label="Close">
+            <IconButton
+              className={classes.closeIcon}
+              color="secondary"
+              onClick={this.onClose}
+              aria-label="Close"
+            >
               <CloseIcon />
             </IconButton>
             <Typography type="title" color="inherit" className={classes.flex}>
@@ -106,12 +118,12 @@ class CommentsListDialog extends React.Component {
         </AppBar>
 
         <List>
-          {comments.length === 0 &&
+          {comments.length === 0 && (
             <ListItem>
               <ListItemText primary="No Comments" />
             </ListItem>
-          }
-          {comments.map((comment) => (
+          )}
+          {comments.map(comment => (
             <ListItem key={comment.id}>
               <ListItemText primary={comment.text} />
             </ListItem>
@@ -127,7 +139,7 @@ class CommentsListDialog extends React.Component {
             onKeyPress={this.handleKeyPress}
           />
           <IconButton className={classes.sendIcon} onClick={this.mutate}>
-            <SendIcon/>
+            <SendIcon />
           </IconButton>
         </div>
       </Dialog>
@@ -138,10 +150,8 @@ class CommentsListDialog extends React.Component {
 export default compose(
   withStyles(styles),
   graphql(createComment, {
-    options: (props) => ({
-      refetchQueries: [
-        'getCompanies'
-      ]
+    options: props => ({
+      refetchQueries: ["getCompanies"]
     })
   })
 )(CommentsListDialog);

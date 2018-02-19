@@ -1,80 +1,50 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import Card from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
-import IconButton from 'material-ui/IconButton';
-import { withStyles } from 'material-ui/styles';
-import CommentIcon from 'material-ui-icons/Comment';
-import LocationIcon from 'material-ui-icons/LocationOn';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import compose from "recompose/compose";
+import Card from "material-ui/Card";
+import Typography from "material-ui/Typography";
+import IconButton from "material-ui/IconButton";
+import { withStyles } from "material-ui/styles";
+import CommentIcon from "material-ui-icons/Comment";
+import LocationIcon from "material-ui-icons/LocationOn";
 import {
   FavoriteCompanyButton,
   LikeCompanyButton,
   DislikeCompanyButton
 } from "./CompanyCard/Buttons";
+import { Route, Link } from "react-router-dom";
 
-import CommentDialog from './CompanyCard/CommentList';
-
-
-const Link = (props) => (
-  <a href={props.href} target="_blank">{props.children}</a>
-);
-
-Link.propTypes = {
-  children: PropTypes.node.isRequired,
-  href: PropTypes.string.isRequired
-};
+import CommentDialog from "./CompanyCard/CommentList";
 
 const style = theme => ({
   card: {
     padding: theme.padding,
-    position: 'relative',
-    boxShadow: theme.shadows[5],
+    position: "relative",
+    boxShadow: theme.shadows[5]
   },
   commentIcon: {
-    position: 'absolute',
-    right: theme.padding,
+    // position: "absolute",
+    // right: theme.padding,
+    // bottom: theme.padding
   },
   locationIcon: {
-    height: '1em'
+    height: "1em"
   },
   location: {
-    textAlign: 'right',
-    fontSize: '.75em'
+    textAlign: "right",
+    fontSize: ".75em"
   },
   title: {
-    display: 'flex',
-    justifyContent: 'space-between'
+    display: "flex",
+    justifyContent: "space-between"
+  },
+  ratingButtons: {
+    display: "flex",
+    justifyContent: "space-between"
   }
 });
 
 class CompanyCard extends Component {
-  state = {
-    isDialogOpen: false,
-  };
-
-  popStateListener = () => {
-    this.setState({
-      isDialogOpen: false
-    });
-  };
-
-  openDialog = () => {
-    window.history.pushState({}, `Comments for ${this.props.company.company_name}`, `#`);
-    this.setState({
-      isDialogOpen: true
-    });
-    window.addEventListener('popstate', this.popStateListener);
-  };
-
-  closeDialog = () => {
-    window.history.back();
-    this.setState({
-      isDialogOpen: false
-    })
-    window.removeEventListener('popstate', this.popStateListener);
-  };
-
   render() {
     const { props } = this;
     const { classes, company } = props;
@@ -82,35 +52,37 @@ class CompanyCard extends Component {
     return (
       <Card className={classes.card}>
         <div>
-          <Typography type="title" className={classes.title}>
+          <Typography variant="title" className={classes.title}>
             {company.company_name}
             <span className={classes.location}>
-              <LocationIcon className={classes.locationIcon}/>
+              <LocationIcon className={classes.locationIcon} />
               {company.city}
             </span>
           </Typography>
-          <Typography type="body1">
-            {company.description}
-          </Typography>
+          <Typography variant="body1">{company.description}</Typography>
         </div>
-        <div>
-        <FavoriteCompanyButton {...company}/>
-        <LikeCompanyButton {...company}/>
-        <DislikeCompanyButton {...company}/>
-        <IconButton className={classes.commentIcon} onClick={this.openDialog}>
-          <CommentIcon/>
-        </IconButton>
+        <div className={classes.ratingButtons}>
+          <div>
+            <FavoriteCompanyButton {...company} />
+            <LikeCompanyButton {...company} />
+            <DislikeCompanyButton {...company} />
+          </div>
+
+          <Link to={`/${company.id}/comments`} className={classes.commentIcon}>
+            <IconButton>
+              <CommentIcon />
+            </IconButton>
+          </Link>
         </div>
-        <CommentDialog
-          isOpen={this.state.isDialogOpen}
-          onClose={this.closeDialog }
-          company={company}
+        <Route
+          path={`/${company.id}/comments`}
+          render={({ history }) => (
+            <CommentDialog history={history} company={company} />
+          )}
         />
       </Card>
     );
   }
 }
 
-export default compose(
-  withStyles(style),
-)(CompanyCard)
+export default compose(withStyles(style))(CompanyCard);

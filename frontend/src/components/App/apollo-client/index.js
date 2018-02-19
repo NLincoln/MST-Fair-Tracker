@@ -1,14 +1,7 @@
-import React from 'react';
-import { ApolloClient, createNetworkInterface } from 'react-apollo';
-import { ApolloProvider as Provider } from 'react-apollo';
+import React from "react";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider as Provider } from "react-apollo";
 
-const networkInterface = createNetworkInterface({
-  uri: '/api/graphql/graphql'
-});
+const client = new ApolloClient({ uri: "/api/graphql" });
 
-export const client = new ApolloClient({
-  networkInterface,
-  connectToDevTools: true
-});
-
-export const ApolloProvider = (props) => <Provider client={client} {...props} />;
+export const ApolloProvider = props => <Provider client={client} {...props} />;
