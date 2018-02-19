@@ -1,6 +1,7 @@
 FROM node:8 as build-step
 COPY . /workdir
 WORKDIR /workdir
+RUN yarn install
 RUN yarn build
 
 FROM nginx:stable-alpine
