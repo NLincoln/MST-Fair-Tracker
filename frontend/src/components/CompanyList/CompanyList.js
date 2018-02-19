@@ -4,6 +4,7 @@ import { withStyles } from "material-ui/styles";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import compose from "recompose/compose";
+import NewCompanyCard from "./NewCompanyCard";
 
 const style = theme => ({
   list: {
@@ -39,6 +40,9 @@ const companiesQuery = gql`
 `;
 
 class CompanyList extends Component {
+  onNewCompany = () => {
+    return this.props.data.refetch();
+  };
   render() {
     if (this.props.data.loading) {
       return <div>Loading</div>;
@@ -48,6 +52,7 @@ class CompanyList extends Component {
         {this.props.data.companies.map(company => (
           <CompanyCard key={company.id} company={company} />
         ))}
+        <NewCompanyCard onSubmit={this.onNewCompany} />
       </div>
     );
   }

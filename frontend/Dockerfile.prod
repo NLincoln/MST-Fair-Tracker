@@ -1,7 +1,12 @@
+FROM node:8 as build-step
+COPY . /workdir
+WORKDIR /workdir
+RUN yarn build
+
 FROM nginx:stable-alpine
 
 LABEL vendor="IntelliFarms" \
   team="WebDev"
 
 COPY config/nginx.conf /etc/nginx/conf.d/default.conf
-COPY build /usr/share/nginx/html
+COPY --from=build-step /workdir/build /usr/share/nginx/html

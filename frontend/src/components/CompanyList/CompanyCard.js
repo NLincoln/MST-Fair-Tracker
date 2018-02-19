@@ -22,18 +22,7 @@ const style = theme => ({
     position: "relative",
     boxShadow: theme.shadows[5]
   },
-  commentIcon: {
-    // position: "absolute",
-    // right: theme.padding,
-    // bottom: theme.padding
-  },
-  locationIcon: {
-    height: "1em"
-  },
-  location: {
-    textAlign: "right",
-    fontSize: ".75em"
-  },
+  commentIcon: {},
   title: {
     display: "flex",
     justifyContent: "space-between"
@@ -54,10 +43,6 @@ class CompanyCard extends Component {
         <div>
           <Typography variant="title" className={classes.title}>
             {company.company_name}
-            <span className={classes.location}>
-              <LocationIcon className={classes.locationIcon} />
-              {company.city}
-            </span>
           </Typography>
           <Typography variant="body1">{company.description}</Typography>
         </div>

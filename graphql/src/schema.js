@@ -35,6 +35,8 @@ const schema = gql`
     favoriteCompany(id: ID!): Company
 
     createComment(company: ID!, comment: CommentInput!): CompanyComment
+
+    createCompany(name: String!, description: String!): Company
   }
 `;
 module.exports = schema;

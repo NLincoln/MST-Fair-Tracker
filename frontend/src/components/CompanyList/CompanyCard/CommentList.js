@@ -50,6 +50,8 @@ const createComment = gql`
   }
 `;
 
+const Transition = props => <Slide direction={"up"} {...props} />;
+
 class CommentsListDialog extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
@@ -99,7 +101,7 @@ class CommentsListDialog extends React.Component {
         fullScreen
         open={true}
         onClose={this.props.onClose}
-        transition={props => <Slide direction="up" {...props} />}
+        transition={Transition}
       >
         <AppBar className={classes.appBar}>
           <Toolbar>
@@ -111,7 +113,11 @@ class CommentsListDialog extends React.Component {
             >
               <CloseIcon />
             </IconButton>
-            <Typography type="title" color="inherit" className={classes.flex}>
+            <Typography
+              variant="title"
+              color="inherit"
+              className={classes.flex}
+            >
               Comments for {company.company_name}
             </Typography>
           </Toolbar>

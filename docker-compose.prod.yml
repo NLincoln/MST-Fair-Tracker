@@ -26,8 +26,6 @@ services:
     build:
       context: ./graphql
       dockerfile: Dockerfile.prod
-    ports:
-      - "9002:9229"
     restart: always
     links:
       - db

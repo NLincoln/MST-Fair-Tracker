@@ -53,6 +53,16 @@ module.exports = {
       return comment.get({
         plain: true
       });
+    },
+    async createCompany(parent, { name, description }, { db }) {
+      const company = await db.Company.create({
+        company_name: name,
+        description,
+        city: "Unknown"
+      });
+      return company.get({
+        plain: true
+      });
     }
   }
 };
